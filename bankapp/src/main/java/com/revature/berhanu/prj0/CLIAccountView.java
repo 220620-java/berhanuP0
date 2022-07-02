@@ -13,7 +13,7 @@ import java.util.Scanner;
     // 3.View Balance 
     // 4.Deposit
     // 5.withdraw
-public class CLIFrontView {
+public class CLIAccountView {
     
 
     public void welcome(String userType){
@@ -39,9 +39,8 @@ public class CLIFrontView {
             }
             else if (choice.equals("2"))
             {
-                CLIAccountManager objCLIAccountManager = new CLIAccountManager();
-                objCLIAccountManager.accountManager();
-            } 
+                
+            }
             else if (choice == "3")
             {
                 

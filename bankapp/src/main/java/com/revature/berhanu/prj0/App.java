@@ -8,10 +8,11 @@ public class App
 {
     public static void main( String[] args )
     {
-        
+       /* Account objAccount = new Account();
+        System.out.println(objAccount.getLastDataEntry());*/
         CLIFrontView objDrawFrontPage = new CLIFrontView();
         objDrawFrontPage.welcome("Employee");
-    
-             
+        
+     
     }
 }

@@ -7,22 +7,33 @@ import java.sql.SQLException;
 /// This is the connection class > the method connectToServer returns a statement,
 // This is the method to be called in this project to connect
 public class ServerConnect {
-    public Statement connectToServer()
+    public Connection connectToServer()
     {
         String dbURL ="jdbc:postgresql://postgressdbinstance1.c5a1xliscqxz.us-east-2.rds.amazonaws.com:5432/BankSystemDB";
         String UserName = "postgresAdmin";
         String Password = "PG1234567890.";
 
         try{
-            
             Connection objConnection = DriverManager.getConnection(dbURL, UserName, Password);
-            Statement objStatement = objConnection.createStatement();
-            return objStatement;
+            return objConnection;
         }
         catch(SQLException e)
         {
             throw new Error(e);
         }
-        //  we have to return something otherwise return null
+         
+    }
+    public Statement getStatement(){
+        String dbURL ="jdbc:postgresql://postgressdbinstance1.c5a1xliscqxz.us-east-2.rds.amazonaws.com:5432/BankSystemDB";
+        String UserName = "postgresAdmin";
+        String Password = "PG1234567890.";
+        try{
+            Connection objConnection = DriverManager.getConnection(dbURL, UserName, Password);
+            Statement objStatement = objConnection.createStatement();
+            return objStatement;
+        }catch(SQLException e)
+        {
+            throw new Error(e);
+        }
     }
 }

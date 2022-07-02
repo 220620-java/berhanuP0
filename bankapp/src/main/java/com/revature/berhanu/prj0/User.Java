@@ -1,8 +1,10 @@
 package com.revature.berhanu.prj0;
 import java.sql.SQLException;
-
-import javax.xml.transform.Result;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;  
+import java.util.Date;
+import java.lang.Thread.State;
+import java.math.BigInteger;
 import java.sql.*;
 
 public class User {
@@ -14,25 +16,28 @@ public class User {
     public void createUser(String SSN ,String  FName,String MName ,String LName ,String DOB,String Gender ,String PNumber,String Email, String PassW )
     {
         ServerConnect objServerConnection = new ServerConnect();
-        Statement objStatement = objServerConnection.connectToServer();
-        String q = "'";
-        String insertUserQueryString= "INSERT INTO public.\"tblUser\"( \"SSN\", \"FirstName\", \"MiddleName\", \"LastName\", \"DOB\", \"Gender\", \"email\", \"phoneNumber\", \"Password\")VALUES (" 
-        +q+SSN+q+","
-        +q+FName+q+","
-        +q+MName+q+","
-        +q+LName+q+","
-        +q+DOB+q+","
-        +q+Gender+q+","
-        +q+PNumber+q+","
-        +q+Email+q+","
-        +q+PassW+q+");";
-
-        System.out.println(insertUserQueryString);
+        Connection objConnection = objServerConnection.connectToServer();
+        
+       
+        String InsertUserQuery = "INSERT INTO tblUser"
+                                +"(UserID, SSN, FirstName, MiddleName, LastName, DOB, Gender, email, phoneNumber, Password)"
+                                +"VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
         try{
-            // use excuteUpdate for staments that do not return rows
-            int  Result = objStatement.executeUpdate(insertUserQueryString);
-            System.out.println("New Customer has been added to the Database");
             
+            PreparedStatement objPreparedStatement = objConnection.prepareStatement(InsertUserQuery);
+            // use excuteUpdate for staments that do not return rows
+            objPreparedStatement.setString(1, SSN);
+            objPreparedStatement.setString(2, FName);
+            objPreparedStatement.setString(3, MName);
+            objPreparedStatement.setString(4, LName);
+            objPreparedStatement.setString(5, DOB);
+            objPreparedStatement.setString(6, Gender);
+            objPreparedStatement.setString(7, Email);
+            objPreparedStatement.setString(8, PhoneNumber);
+            objPreparedStatement.setString(9, PassW);
+            int  Result = objPreparedStatement.executeUpdate();
+            System.out.println("New Customer has been added to the Database");            
         }
         catch(SQLException e){
             throw (new Error(e));
@@ -40,15 +45,43 @@ public class User {
     }
     public void updateUser(String ID, String SSN ,String  FName,String MName ,String LName,String DOB ,String Gender ,String PNumber,String Email, String PassW )
     {
-        //System.out.println(UpdateUserQuery);
-        ServerConnect objServerConnection = new ServerConnect();
-        Statement objStatement = objServerConnection.connectToServer();
-        String q = "'";
-        String UpdateUserQuery = "UPDATE public.\"tblUser\" SET \"SSN\"=" +q+SSN+q +", \"FirstName\"=" +q+FName+q+ ", \"MiddleName\"="+q+MName+q+", \"LastName\"="+q+LName+q+", \"DOB\"="+q+DOB+q+", \"Gender\"="+q+Gender+q+", \"email\"="+q+Email+q+", \"phoneNumber\"="+q+PNumber+q+", \"Password\"="+q+PassW+q+ "WHERE \"UserID\"="+q+ID+q+";";
         
+        ServerConnect objServerConnection = new ServerConnect();
+        Connection objConnection = objServerConnection.connectToServer();;
+
+        String updateUserQuery ="UPDATE public.tbluser "
+        +"set ssn=?, " 
+        +"firstname=?, "
+        +"middlename=?, "
+        +"lastname=?, "
+        +"dob=?, "
+        +"gender=?, "
+        +"email=?, "
+        +"phonenumber=?, "
+        +"password=? "
+        +"WHERE UserID=? ";
+        
+        Long objID = Long.parseLong(ID);
+        
+
         try{
             // use excuteUpdate for staments that do not return rows
-            int  Result = objStatement.executeUpdate(UpdateUserQuery);
+            PreparedStatement objPreparedStatement = objConnection.prepareStatement(updateUserQuery);
+            // use excuteUpdate for staments that do not return rows
+            objPreparedStatement.setString(1, SSN);
+            objPreparedStatement.setString(2, FName);
+            objPreparedStatement.setString(3, MName);
+            objPreparedStatement.setString(4, LName);
+            objPreparedStatement.setString(5, DOB);
+            objPreparedStatement.setString(6, Gender);
+            objPreparedStatement.setString(7, Email);
+            objPreparedStatement.setString(8, PhoneNumber);
+            objPreparedStatement.setString(9, PassW);
+            objPreparedStatement.setLong(10, objID); // the parameter recieved 
+           
+            
+            objPreparedStatement.executeUpdate();
+
             System.out.println("Customer has been updated ");
         }
         catch(SQLException e){
@@ -58,11 +91,16 @@ public class User {
     public Object getSingleUser (String ID){
         User objUser = new User(); 
         ServerConnect objServerConnection = new ServerConnect();
-        Statement objStatement = objServerConnection.connectToServer();
+        Connection objConnection = objServerConnection.connectToServer();
+        Long objID = Long.parseLong(ID);
         try{
             // objStatement.executeQuery(strInsertUser);
-            
-            ResultSet Result = objStatement.executeQuery("SELECT * FROM public.\"tblUser\" where \"UserID\" ="+ ID +";");
+            String getSingleUserQuery= "SELECT * FROM public.tblUser  where UserID = ? ";
+            PreparedStatement objPreparedStatement = objConnection.prepareStatement(getSingleUserQuery);
+            objPreparedStatement.setLong(1, objID);
+            ResultSet Result = objPreparedStatement.executeQuery();
+
+           
             while(Result.next()){
                 // here we are retierving data and send it to the calling method based on ID 
                 objUser.UserID = Result.getString("USerID");
@@ -85,14 +123,40 @@ public class User {
     }
     public void searchUser(String searchTerm){
         ServerConnect objServerConnection = new ServerConnect();
-        Statement objStatement = objServerConnection.connectToServer();
+        Connection objConnection = objServerConnection.connectToServer();
         try{
+            // 1 construcct a string of a query 
+            // 2 replace the ? with setstring 
+
             // objStatement.executeQuery(strInsertUser);
-            String ls = "'%"; // ls : like start 
-            String le = "%'"; // le : like end  
-            String searchParam = "SELECT \"UserID\", \"SSN\", \"FirstName\", \"MiddleName\", \"LastName\", \"DOB\", \"Gender\", \"email\", \"phoneNumber\", \"Password\" FROM public.\"tblUser\" where \"SSN\" = " + "'"+searchTerm+"'" + " or \"FirstName\" LIKE "+ls+searchTerm+le+ " or \"MiddleName\" LIKE "+ls+searchTerm+le+" or \"LastName\" LIKE "+ls+searchTerm+le+ " or \"email\" LIKE "+ls+searchTerm+le+ " or \"phoneNumber\" LIKE "+ls+searchTerm+le+ ";";
-            System.out.println(searchParam);
-            ResultSet Result = objStatement.executeQuery(searchParam);
+          //  String ls = "'%"; // ls : like start 
+          //  String le = "%'"; // le : like end  
+            //String searchParam = "SELECT \"UserID\", \"SSN\", \"FirstName\", \"MiddleName\", \"LastName\", \"DOB\", \"Gender\", \"email\", \"phoneNumber\", \"Password\" FROM public.\"tblUser\" where \"SSN\" = " + "'"+searchTerm+"'" + " or \"FirstName\" LIKE "+ls+searchTerm+le+ " or \"MiddleName\" LIKE "+ls+searchTerm+le+" or \"LastName\" LIKE "+ls+searchTerm+le+ " or \"email\" LIKE "+ls+searchTerm+le+ " or \"phoneNumber\" LIKE "+ls+searchTerm+le+ ";";
+            // Step 1.
+            String searchQuery = "SELECT * FROM tblUser " +
+            "Where SSN = ? or "+
+            "FirstName LIKE ? or "+
+            "MiddleName LIKE ? or "+
+            "LastName LIKE ? or "+
+            "DOB LIKE ? or "+
+            "Gender LIKE ? or "+
+            "email LIKE ? or "+
+            "phoneNumber LIKE ?" ;
+
+            // step 2 here we make the prepqared statemet object and pass the string 
+            PreparedStatement objPreparedStatement = objConnection.prepareStatement(searchQuery);
+            // set string 
+            objPreparedStatement.setString(1,searchTerm );
+            objPreparedStatement.setString(2, searchTerm);
+            objPreparedStatement.setString(3, searchTerm);
+            objPreparedStatement.setString(4, searchTerm);
+            objPreparedStatement.setString(5, searchTerm);
+            objPreparedStatement.setString(6, searchTerm);
+            objPreparedStatement.setString(7, searchTerm);
+            objPreparedStatement.setString(8, searchTerm);
+            
+            
+            ResultSet Result = objPreparedStatement.executeQuery();
             System.out.println("Search Result");
             System.out.println("-----------------------------------------------------------------------------------");
             while(Result.next()){
@@ -125,11 +189,15 @@ public class User {
     public void readUser( )
     {
         ServerConnect objServerConnection = new ServerConnect();
-        Statement objStatement = objServerConnection.connectToServer();
+        Connection objConnection = objServerConnection.connectToServer();
+        
         try{
             // objStatement.executeQuery(strInsertUser);
-            
-            ResultSet Result = objStatement.executeQuery("SELECT * FROM public.\"tblUser\"");
+            // get prepared statement 
+            String readQuery ="SELECT * FROM public.tblUser";
+            PreparedStatement objPreparedStatement = objConnection.prepareStatement(readQuery);
+
+            ResultSet Result = objPreparedStatement.executeQuery();
             System.out.println("List of Customers");
             System.out.println("-----------------------------------------------------------------------------------");
             while(Result.next()){
@@ -163,13 +231,20 @@ public class User {
     public void deleteUser(String ID)
     {
         ServerConnect objServerConnection = new ServerConnect();
-        Statement objStatement = objServerConnection.connectToServer();
-        String q = "'";
-        String insertUserQueryString= "DELETE FROM public.\"tblUser\" WHERE \"UserID\" ="+ ID +";";
-    
+        Connection objConnection = objServerConnection.connectToServer();
+
+        Long objID = Long.parseLong(ID); 
+       
+        
         try{
-            // use excuteUpdate for staments that do not return rows
-            int  Result = objStatement.executeUpdate(insertUserQueryString);
+            String deleteUserQueryString= "DELETE FROM public.tblUser"
+                                         +" WHERE userid = ? ";
+
+            // the following code doesn't work because preparedstatement doesn't have setbigin method 
+            PreparedStatement objPreparedStatement = objConnection.prepareStatement(deleteUserQueryString);
+            objPreparedStatement.setLong(1,objID);
+           // use excuteUpdate for staments that do not return rows
+            int  Result = objPreparedStatement.executeUpdate();
             System.out.println("Customer has been deleted ");
         }
         catch(SQLException e){
