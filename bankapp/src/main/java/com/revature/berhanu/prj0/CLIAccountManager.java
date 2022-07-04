@@ -31,7 +31,7 @@ public class CLIAccountManager {
          }
          else if(choice.equals("4")){
             CLIAccountUpdate objCLIAccountUpdate = new  CLIAccountUpdate();
-            objCLIAccountUpdate.updateCustomer();
+           // objCLIAccountUpdate.updateCustomer();
          }
          else if(choice.equals("5")){
              

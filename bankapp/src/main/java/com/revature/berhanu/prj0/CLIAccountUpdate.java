@@ -2,12 +2,12 @@ package com.revature.berhanu.prj0;
 import java.util.*;
 
 public class CLIAccountUpdate {
-    public void updateCustomer(){
+   /*  public void updateCustomer(){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Customer Management page of the Bank Of Happy Land");
+        System.out.println("Account Management page of the Bank Of Happy Land");
         System.out.println("--------------------------------------------- ");
-        System.out.println("Customer ID?");
-        String ID= sc.nextLine();
+        System.out.println("Please provide the Account Number you want to updat?");
+        String  accountNumber= sc.nextLine();
         System.out.println("Cusomer First Name");
         String fname= sc.nextLine();
         System.out.println("Cusomer Middle Name ");
@@ -33,8 +33,8 @@ public class CLIAccountUpdate {
         sc.close();
 
 
+  */
 
 
-
-    }
+   // }
 }

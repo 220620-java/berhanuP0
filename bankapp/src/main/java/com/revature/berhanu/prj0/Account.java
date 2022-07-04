@@ -7,13 +7,14 @@ import com.sun.tools.javac.main.Main.Result;
 
 import java.sql.*;
 public class Account {
-    
+    // this models the database table properties
     String accountid, aaccounttypeid, accountbalance, accountownershiptype, accountnumber, accountstatus;
     public void createAccount(String AccountTypeID, String  AccountBalance, String AccountOwnershipType, String AccountNumber, String AccountStatus){
+        
         ServerConnect objServerConnection = new ServerConnect();
         Connection objConnection = objServerConnection.connectToServer();
-        String insertAccountType= "INSERT INTO public.tblaccount("+
-            "accountid, aaccounttypeid, accountbalance, accountownershiptype, accountnumber, accountstatus)"+
+        String insertAccountType= "INSERT INTO public.tblaccount"+
+            "(accountid, aaccounttypeid, accountbalance, accountownershiptype, accountnumber, accountstatus)"+
             "VALUES (default, ?, ?, ?, ?, ?)";
         
         Long ojbATID = Long .parseLong(AccountTypeID);
@@ -23,9 +24,9 @@ public class Account {
             PreparedStatement objPreparedStatement = objConnection.prepareStatement(insertAccountType);
             objPreparedStatement.setLong(1,ojbATID );
             objPreparedStatement.setDouble(2,objABLC);
-            objPreparedStatement.setString(3,accountownershiptype );
-            objPreparedStatement.setString(4,accountnumber);
-            objPreparedStatement.setString(5,accountstatus );
+            objPreparedStatement.setString(3,AccountOwnershipType );
+            objPreparedStatement.setString(4,AccountNumber);
+            objPreparedStatement.setString(5,AccountStatus );
              
             int  Result =   objPreparedStatement.executeUpdate();
             System.out.println("New Account has been added ");
@@ -60,29 +61,31 @@ public class Account {
                 throw (new Error(e));
             }
     }
-    public void updateAccount(String AccountID, String AccountTypeID, String  AccountBalance, String AccountOwnershipType, String AccountNumber, String AccountStatus){
+    public void updateAccount(String AccountID, String AccountTypeID, String  AccountBalance, String AccountOwnershipType, String AccountNumber, String AccountStatus, String msg){
         ServerConnect objServerConnection = new ServerConnect();// step 1
         Connection objConnection = objServerConnection.connectToServer();// step 2
         Long objAID = Long.parseLong(AccountID); 
         Long ojbATID = Long .parseLong(AccountTypeID);
         Double objABLC = Double.parseDouble(AccountBalance);
-        
+
         try{
-            String updateAccountTypeQuery =  "UPDATE public.tblaccount" + //step 3
-            "SET accountid=?, aaccounttypeid=?, accountbalance=?, accountownershiptype=?, accountnumber=?, accountstatus=?"+
-            "WHERE accountid = ?;";
+            String updateAccountTypeQuery = "UPDATE public.tblaccount " + //step 3
+                                            "SET aaccounttypeid=?, accountbalance=?, accountownershiptype=?, accountnumber=?, accountstatus=? "+
+                                            "WHERE accountid = ?;";
             PreparedStatement objPreparedStatement = objConnection.prepareStatement(updateAccountTypeQuery); 
-            objPreparedStatement.setLong(1,objAID); 
-            objPreparedStatement.setLong(2,ojbATID); 
-            objPreparedStatement.setDouble(3,objABLC);
-            objPreparedStatement.setString(4,AccountOwnershipType);
-            objPreparedStatement.setString(5,AccountNumber);
-            objPreparedStatement.setString(6,AccountStatus);
+            objPreparedStatement.setLong(1,ojbATID); 
+            objPreparedStatement.setDouble(2,objABLC);
+            objPreparedStatement.setString(3,AccountOwnershipType);
+            objPreparedStatement.setString(4,AccountNumber);
+            objPreparedStatement.setString(5,AccountStatus);
+            objPreparedStatement.setLong(6,objAID); 
             objPreparedStatement.executeUpdate();
-            System.out.println("New Account has been updated ");
+            System.out.println(msg);
         }
         catch (SQLException e){
+            System.out.println(e.toString());
             throw  (new Error(e));
+            
         }
     }
     public void deleteAccount(String ID){
@@ -167,11 +170,19 @@ public class Account {
         ServerConnect objServerConnection = new ServerConnect();
         Connection objConnection = objServerConnection.connectToServer();
         try{
-            String getLastQuery = "select max(userid) from public.tbluser ";
+            String getLastQuery = "select max(accountID) from public.tblaccount ";
             PreparedStatement objPreparedStatement = objConnection.prepareStatement(getLastQuery);
             ResultSet Result = objPreparedStatement.executeQuery();
-            //String lastID = Result.next();
-            return "id";
+            String lastID ="";
+            while(Result.next()){
+                lastID = Result.getString(1);
+                if(lastID == null){
+                    lastID = "0";
+                }
+            }
+            
+           
+            return lastID;
         }catch(SQLException e){
             throw(new Error(e));
         }

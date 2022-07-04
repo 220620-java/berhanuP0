@@ -155,20 +155,18 @@ public class AccountType {
         ServerConnect objServerConnection = new ServerConnect();
         Connection objConnection = objServerConnection.connectToServer();
         Long objID = Long.parseLong(ID);
- 
-       
+      
         try{
             // objStatement.executeQuery(strInsertUser);
             String getAccountTypeQuery= "SELECT * FROM public.tblAccountType "
-                                         + " Where ID = ?";
+                                         + " Where accounttypeid = ? ";
             PreparedStatement objPreparedStatement = objConnection.prepareStatement(getAccountTypeQuery);
             objPreparedStatement.setLong(1, objID);
             ResultSet Result = objPreparedStatement.executeQuery();
-            
-           
+    
             while(Result.next()){
                 // here we are retierving data and send it to the calling method based on ID 
-                  objAccountType.AccountTypeId = Result.getString("accountypeid");
+                  objAccountType.AccountTypeId = Result.getString("accounttypeid");
                   objAccountType.AccountTypeName = Result.getString("accounttypename");
                   objAccountType.InterestRate = Result.getString("interestrate");
             }

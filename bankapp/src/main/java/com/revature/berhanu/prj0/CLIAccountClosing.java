@@ -9,7 +9,7 @@ import java.util.*;
 // 4. if yes delete the user (customer) this is ony possible for new customers not associated with any account 
 
 public class CLIAccountClosing {
-    void closeAccount(){
+   public  void closeAccount(){
         AccountType objAccountType = new AccountType();
         Account objAccount = new Account();
         Scanner objScanner = new Scanner(System.in);
@@ -19,25 +19,18 @@ public class CLIAccountClosing {
         String AccountNumber = objScanner.nextLine();
         objAccount = (Account)objAccount.getSingleAccount(AccountNumber);
         String AccountTypeID =  objAccount.aaccounttypeid;
-        
-        // User objUser = new User();
-        //objUser = (User)objUser.getSingleUser(CustomerID);
         objAccountType = (AccountType)objAccountType.getSingleAccountType(AccountTypeID);
-        
-        //tblAccount , tblAccountType
         System.out.println("___________________________________________________________________________________");
                 System.out.println(objAccountType.AccountTypeName +" "+ objAccountType.InterestRate + "%");
                 System.out.println("AccountNumber : "+objAccount.accountnumber);
                 System.out.println("Balance : " + objAccount.accountbalance);
                 System.out.println("___________________________________________________________________________________");
-        System.out.println("Are you sure you want to delete this customer ? y/n");
+        System.out.println("Are you sure you want to close this account? y/n");
         String answer = objScanner.nextLine();
-        /// have the employee see which customer data he/she is deleting
-        // here we 
        
         if(answer.equals("y") || answer.equals("Y"))
-        {
-            //objUser.deleteUser(CustomerID);
+        { 
+            objAccount.updateAccount(objAccount.accountid, objAccount.aaccounttypeid,objAccount.accountbalance,objAccount.accountownershiptype, objAccount.accountnumber, "closed", "This Account is Closed succesfully");
         }
         else if (answer.equals("n") || answer.equals("N"))
         {
