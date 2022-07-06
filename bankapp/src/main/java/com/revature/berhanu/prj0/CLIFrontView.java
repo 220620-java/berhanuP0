@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class CLIFrontView {
 
     public void welcome(String userType) {
+        CLILogin objCliLogin = new CLILogin();
         if (userType == "Employee") {
             System.out.println("WELCOME Employee to the Bank Of Happy Land");
             System.out.println("--------------------------------------------- ");
@@ -26,6 +27,7 @@ public class CLIFrontView {
             System.out.println("5- Transfer Funds");
             System.out.println("6- View Balance ");
             System.out.println("7- View Transaction History");
+            System.out.println("8- Exit");
 
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter your Choice: ");
@@ -58,6 +60,10 @@ public class CLIFrontView {
             } 
             else if (choice.equals("7")) {
 
+            }
+            
+            else if (choice.equals("8") || objCliLogin.equals(true) ) {
+                System.exit(0);
             }
 
             sc.close();

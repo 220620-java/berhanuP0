@@ -15,61 +15,18 @@ import java.util.Scanner;
     // 5.withdraw
 public class CLIAccountView {
     
+        public void accountopenedView(){
+        
+            System.out.println(" List Of Active Accounts");
+            System.out.println("___________________________________________________________________________________");
 
-    public void welcome(String userType){
-        if (userType=="Employee"){
-            System.out.println("WELCOME Employee to the Bank Of Happy Land");
-            System.out.println("--------------------------------------------- ");
-            System.out.println("1- Manage User");
-            System.out.println("2- Manage Account");/// Separate items 3,4,5,6, 7 to make it easily accesible 
-            System.out.println("3- Deposit Funds");
-            System.out.println("4- Withdraw Funds");
-            System.out.println("5- Transfer Funds");
-            System.out.println("6- View Balance ");
-            System.out.println("7- View Transaction History");
-
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Enter your Choice: ");
-            String choice = sc.nextLine();
-            
-            if (choice.equals("1"))// Manage User Creates new Customer,Read /Update/Delete User
-            {
-                    CLIUserManager objUserManagerPage= new CLIUserManager();
-                    objUserManagerPage.userManager();
-            }
-            else if (choice.equals("2"))
-            {
-                
-            }
-            else if (choice == "3")
-            {
-                
-            }
-            else if (choice == "4")
-            {
-                
-            }
-
-            else if (choice == "5")
-            {
-                
-            }
-
-            else if (choice == "6")
-            {
-                
-            }
-            else if (choice == "7")
-            {
-                
-            }
+        Account objAccountsee = new Account();
+        objAccountsee.readOpenedAccount();
 
 
-            sc.close();
-            
 
         }
 
-    }
 
+     
 }

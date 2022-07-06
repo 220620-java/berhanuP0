@@ -9,8 +9,7 @@ public class App
     public static void main( String[] args )
     {
       
-       // CLIFrontView objDrawFrontPage = new CLIFrontView();
-       // objDrawFrontPage.welcome("Employee");
+       // Display Login Page
         CLILogin objCliLogin= new CLILogin();
         objCliLogin.verifyLogin();
     }

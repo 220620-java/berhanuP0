@@ -21,16 +21,17 @@ import java.util.Scanner;
         String password = sc.nextLine();
         
 
+         
         if ("Berhanu".equals(userName) && "password".equals(password))
          
         {
-        System.out.println("User Succesfully logged in.....");
+            System.out.println("User Succesfully logged in.....");
 
         CLIFrontView objDrawFrontPage = new CLIFrontView();
         objDrawFrontPage.welcome("Employee");
         
 
-        }else
+        }else 
         {
        
             System.out.println("Invalid User Name or Password ");

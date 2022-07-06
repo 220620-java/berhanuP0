@@ -81,6 +81,8 @@ public class CLIAccountOpening {
 
           
         }
+
+        // this was to be used to open joint account
         else if (ownershiptype.equals("2")){
           ownershiptype = "Joint";
           System.out.print("Who will be the owners of this account , Please enter their IDs");

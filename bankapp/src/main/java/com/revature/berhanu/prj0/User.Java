@@ -9,7 +9,7 @@ import java.sql.*;
 
 public class User {
     
-
+  // This class contains the CRUD for my User 
     public String UserID,SSN,FirstName,MiddleName,LastName,DOB,Gender,PhoneNumber,Email,Password;
     
       
@@ -157,6 +157,7 @@ public class User {
             
             
             ResultSet Result = objPreparedStatement.executeQuery();
+            int count =0;
             System.out.println("Search Result");
             System.out.println("-----------------------------------------------------------------------------------");
             while(Result.next()){
@@ -178,8 +179,14 @@ public class User {
                 System.out.println("SSN   : "+SSN);
                 System.out.println("DOB   : "+DOB +" | Gender : "+ Gender +" | Password : "+ Password);
                 System.out.println("___________________________________________________________________________________");
-            
+                 
+                count = + 1;
+                
             }
+            if( count==0){
+                System.out.println(" No Result Found");
+            }
+
         }
         catch(SQLException e){
             throw (new Error(e));

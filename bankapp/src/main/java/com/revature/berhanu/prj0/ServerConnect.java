@@ -23,6 +23,7 @@ public class ServerConnect {
         }
          
     }
+    // this one is another option just to work with Statement eventhough it is vulnerable for  SQL injection --> but another option to preparestatement
     public Statement getStatement(){
         String dbURL ="jdbc:postgresql://postgressdbinstance1.c5a1xliscqxz.us-east-2.rds.amazonaws.com:5432/BankSystemDB";
         String UserName = "postgresAdmin";

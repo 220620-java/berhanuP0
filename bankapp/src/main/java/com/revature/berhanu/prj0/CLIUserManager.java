@@ -7,7 +7,7 @@ public class CLIUserManager {
             System.out.println("Customer Management page of the Bank Of Happy Land");
             System.out.println("--------------------------------------------- ");
             System.out.println("1- Add New Customer" );
-            System.out.println("2- View All Custome"); 
+            System.out.println("2- View All Customer"); 
             System.out.println("3- Delete Customer");
             System.out.println("4- Update Customer Data");
             System.out.println("5- Search Customer");

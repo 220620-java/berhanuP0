@@ -8,6 +8,8 @@ import com.sun.tools.javac.main.Main.Result;
 import java.sql.*;
 public class Account {
     // this models the database table properties
+    
+    
     String accountid, aaccounttypeid, accountbalance, accountownershiptype, accountnumber, accountstatus;
     public void createAccount(String AccountTypeID, String  AccountBalance, String AccountOwnershipType, String AccountNumber, String AccountStatus){
         
@@ -28,7 +30,7 @@ public class Account {
             objPreparedStatement.setString(4,AccountNumber);
             objPreparedStatement.setString(5,AccountStatus );
              
-            int  Result =   objPreparedStatement.executeUpdate();
+            objPreparedStatement.executeUpdate();
             System.out.println("New Account has been added ");
             
         }
@@ -103,6 +105,7 @@ public class Account {
             throw  (new Error(e));
         }
     }
+   /// Is used to get a single axcount number 
     public Object getSingleAccount(String AccountNumber){
         Account objAccount = new Account();
         ServerConnect objServerConnection = new ServerConnect();
@@ -134,6 +137,8 @@ public class Account {
         return objAccount;
 
     }
+
+    // Gives me a list accounts to use it 
     public List<Account> getAccounts()
     {
         ServerConnect objServerConnection = new ServerConnect();
@@ -166,7 +171,7 @@ public class Account {
     {
         // I AM BUILDING THIS FUNCTION SO THAT I KNOW THE ID OF THE LAST ITEM THAT HAS BEEN ADDED TO THE DB , SO THAT I CAN USE IT TO GENERATE THE BANK ACCOUNT NUMBER 
         // like if the last id , is 13 the bank account number would be 1000-722022-13 or some thing like this 
-        //
+        // tp generate a unique accountv number by concatinating it to the pregenerated account 
         ServerConnect objServerConnection = new ServerConnect();
         Connection objConnection = objServerConnection.connectToServer();
         try{
@@ -188,6 +193,29 @@ public class Account {
         }
     }
     
-    
+    public void readOpenedAccount(){
+        ServerConnect objServerConnection = new ServerConnect();
+        Connection objConnection = objServerConnection.connectToServer();
+            try{
+                
+                String  readAccountQuery =  "SELECT * FROM public.tblAccount Where accountstatus= 'Active' ";
+                PreparedStatement objPreparedStatement = objConnection.prepareStatement(readAccountQuery);
+               
+                ResultSet Result = objPreparedStatement.executeQuery();
+                System.out.println("List of Active Accounts");
+                System.out.println("-----------------------------------------------------------------------------------");
+                while(Result.next()){
+                    
+                    System.out.println("___________________________________________________________________________________");
+                    System.out.println("Account Number : "+Result.getString("accountnumber"));
+                    System.out.println("Ownership Type : "+Result.getString("accountownershiptype"));
+                    System.out.println("Balance : "+Result.getString("accountbalance"));
+                    System.out.println("Status : "+Result.getString("accountstatus"));
+                    System.out.println("___________________________________________________________________________________");
+                }
+            } catch(SQLException e){
+                throw (new Error(e));
+            }
+    }
     
 }

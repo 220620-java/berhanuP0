@@ -12,7 +12,7 @@ public class CLIAccountManager {
         System.out.println("3- Close Account");
         System.out.println("4- Update Account ");
         System.out.println("5- Search Account");
-         
+        System.out.println("6- Exit"); 
        Scanner sc = new Scanner(System.in);
         System.out.print("Enter your Choice: ");
         String choice = sc.nextLine();
@@ -22,8 +22,10 @@ public class CLIAccountManager {
             objCLIAccountCreation.drawCreatAccountPage();
         }
         else if(choice.equals("2")){
-           User objUser = new User();
-           objUser.readUser();
+            
+           CLIAccountView objCliAccountView= new CLIAccountView();
+           objCliAccountView.accountopenedView();
+           
         }
         else if(choice.equals("3")){
             CLIAccountClosing objCLIAccountDeletion = new CLIAccountClosing();
@@ -37,6 +39,10 @@ public class CLIAccountManager {
              
             CLIAccountSearch  objCLIAccountSearch = new  CLIAccountSearch();
             //objCLIAccountSearch.searchAccount();
+         }
+         else if(choice.equals("6")){
+             
+           System.exit(0);
          }
 
         sc.close();
