@@ -1,7 +1,5 @@
 package com.revature.berhanu.prj0;
-import java.sql.*;
-import java.sql.DriverManager;
-import java.util.*;
+import com.revature.berhanu.prj0.Interface.CLILogin;
 
 
 public class App 
